@@ -7,3 +7,4 @@ include("src:main:domain")
 findProject(":src:main:domain")?.name = "domain"
 include("src:main:common")
 findProject(":src:main:common")?.name = "common"
+
