@@ -9,11 +9,25 @@ import lombok.*;
 @Setter
 @ToString
 @Entity
-public class UserEntity extends LocationBase {
+@Builder
+public class UserEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+
+    @Column
+    private String email;
+    @Column
+    private String password;
 
     @Column
     private String name;
+
+    @Column
+    private int point;
+
+    @Column
+    private Double lat;
+    @Column
+    private Double lng;
 }
