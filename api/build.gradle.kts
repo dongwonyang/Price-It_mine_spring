@@ -1,12 +1,7 @@
-plugins {
-    id("java")
-}
-
-group = "project.price_it"
-version = "0.0.1-SNAPSHOT"
-
-repositories {
-    mavenCentral()
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:3.3.4")
+    }
 }
 
 dependencies {
@@ -18,9 +13,4 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("com.h2database:h2")
-
-}
-
-tasks.test {
-    useJUnitPlatform()
 }

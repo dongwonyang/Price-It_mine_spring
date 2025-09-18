@@ -1,12 +1,7 @@
-plugins {
-    id("java")
-}
-
-group = "project.price_it"
-version = "0.0.1-SNAPSHOT"
-
-repositories {
-    mavenCentral()
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:3.3.4")
+    }
 }
 
 dependencies {
@@ -18,8 +13,7 @@ dependencies {
 
     // Spring Data JPA
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-}
 
-tasks.test {
-    useJUnitPlatform()
+    testImplementation(platform("org.junit:junit-bom:5.9.1"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
 }
