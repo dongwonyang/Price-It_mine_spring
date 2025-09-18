@@ -35,6 +35,11 @@ allprojects {
 	}
 }
 
+springBoot {
+	mainClass = "project.price_it.api.ApiApplication"
+}
+
+
 
 subprojects {
 	apply(plugin = "java-library")
