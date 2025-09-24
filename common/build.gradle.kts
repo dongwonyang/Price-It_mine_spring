@@ -1,12 +1,7 @@
-plugins {
-    id("java")
-}
-
-group = "project.price_it"
-version = "0.0.1-SNAPSHOT"
-
-repositories {
-    mavenCentral()
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:3.3.4")
+    }
 }
 
 dependencies {
@@ -17,6 +12,12 @@ dependencies {
 
     // Aop
     implementation("org.springframework.boot:spring-boot-starter-aop")
+
+
+    // jwt
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
 }
 
 tasks.test {

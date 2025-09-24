@@ -19,4 +19,16 @@ public class UserService {
     public UserEntity get(Long id){
         return userRepository.getById(id);
     }
+
+
+    public UserEntity authenticate(String email, String password) {
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
+
+        if (!user.getPassword().equals(password)) {
+            throw new IllegalArgumentException("비밀번호 불일치");
+        }
+
+        return user;
+    }
 }

@@ -1,0 +1,4 @@
+jwt:
+  secret: ${PRICE_IT_SECRET:mySuperSecureSecretKeyThatIsAtLeast32Bytes!}
+  access-token-validity-ms: 3600000 # 1시간
+  refresh-token-validity-ms: 604800000  # 7일

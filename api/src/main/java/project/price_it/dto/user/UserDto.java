@@ -1,4 +1,4 @@
-package project.price_it.dto;
+package project.price_it.dto.user;
 
 import lombok.*;
 import project.price_it.entity.UserEntity;
@@ -45,3 +45,5 @@ public class UserDto {
                 .build();
     }
 }
+
+
