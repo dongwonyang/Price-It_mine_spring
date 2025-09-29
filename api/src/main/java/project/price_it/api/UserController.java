@@ -6,10 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import project.price_it.dto.user.LoginRequestDto;
 import project.price_it.dto.user.JwtTokenDto;
 import project.price_it.dto.user.UserDto;
@@ -38,7 +35,7 @@ public class UserController {
         return ResponseEntity.ok(UserDto.fromEntity(userService.create(userDto.toEntity())));
     }
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     @Operation(summary = "로그인 및 Access Token 발급")
     public ResponseEntity<JwtTokenDto> login(@RequestBody LoginRequestDto request) {
         // 1️⃣ 사용자 인증

@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -32,6 +33,7 @@ public class DebuggingAspect {
         for (Object obj : args) {
             log.info("{}#{}의 입력값 => {}", className, methodName, obj);
         }
+        System.out.println("logging 실행됨");
     }
 
     @AfterReturning(value = "cut()", returning = "returnObj")

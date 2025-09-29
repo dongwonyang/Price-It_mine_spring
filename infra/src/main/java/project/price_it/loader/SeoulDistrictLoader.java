@@ -1,12 +1,16 @@
-package project.price_it;
+package project.price_it.loader;
 
+import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import project.price_it.entity.CityEntity;
 import project.price_it.entity.DistrictEntity;
 import project.price_it.repository.CityRepository;
 
+import java.util.ArrayList;
+
 @Component
+@Transactional
 public class SeoulDistrictLoader implements CommandLineRunner {
 
     private final CityRepository cityRepository;
@@ -21,6 +25,7 @@ public class SeoulDistrictLoader implements CommandLineRunner {
         CityEntity seoul = CityEntity.builder()
                 .name("서울시")
                 .build();
+        seoul.setDistricts(new ArrayList<>());
 
         // 서울시 모든 구 이름 배열
         String[] districts = {
@@ -42,6 +47,8 @@ public class SeoulDistrictLoader implements CommandLineRunner {
 
         // DB 저장 (CascadeType.ALL로 District도 자동 저장)
         cityRepository.save(seoul);
+
+        System.out.println("SeoulDistrictLoader 실행됨");
     }
 }
 

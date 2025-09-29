@@ -1,18 +1,22 @@
 package project.price_it.service;
 
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import project.price_it.entity.UserEntity;
 import project.price_it.repository.UserRepository;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public UserEntity create(UserEntity entity){
+        if (userRepository.existsByEmail(entity.getEmail())) {
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다: " + entity.getEmail());
+        }
+
         return userRepository.save(entity);
     }
 
