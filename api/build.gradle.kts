@@ -7,6 +7,7 @@ dependencyManagement {
 dependencies {
     implementation(project(mapOf("path" to ":domain")))
     implementation(project(mapOf("path" to ":common")))
+    implementation(project(mapOf("path" to ":infra")))
 
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
