@@ -29,7 +29,12 @@ public class UserController {
     @Operation(
             summary = "회원가입"
     )
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> createUser(@RequestBody LoginRequestDto loginRequestDto) {
+        UserDto userDto = new UserDto();
+
+        userDto.setEmail(loginRequestDto.getEmail());
+        userDto.setPassword(loginRequestDto.getPassword());
+
         return ResponseEntity.ok(UserDto.fromEntity(userService.create(userDto.toEntity())));
     }
 
