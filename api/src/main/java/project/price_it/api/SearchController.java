@@ -45,6 +45,5 @@ public class SearchController {
         return ResponseEntity.ok(districtService.getDistrictByCity(cityName).stream()
                 .map(d -> new DistrictResponseDto(d.getName()))
                 .collect(Collectors.toList()));
-
     }
 }

@@ -1,6 +1,7 @@
 package project.price_it.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -62,11 +63,18 @@ public class JwtTokenProvider {
     }
 
 
-    public String getUserIdFromAccessToken(String accessToken) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(secretKey.getBytes())
-                .parseClaimsJws(accessToken)
-                .getBody();
-        return claims.getSubject();
+    public Long getUserIdFromAccessToken(String accessToken) {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secretKey.getBytes())
+                    .parseClaimsJws(accessToken)
+                    .getBody();
+
+            String subject = claims.getSubject();
+            return Long.parseLong(subject);
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid JWT token", e);
+        }
     }
+
 }
