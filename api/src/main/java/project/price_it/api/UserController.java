@@ -35,7 +35,7 @@ public class UserController {
         return ResponseEntity.ok(UserDto.fromEntity(userService.create(userDto.toEntity())));
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     @Operation(summary = "로그인 및 Access Token 발급")
     public ResponseEntity<JwtTokenDto> login(@RequestBody LoginRequestDto request) {
         // 1️⃣ 사용자 인증
