@@ -2,6 +2,10 @@ package project.price_it.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import project.price_it.entity.point.PointEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,4 +34,7 @@ public class UserEntity{
     private Double lat;
     @Column
     private Double lng;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PointEntity> points = new ArrayList<>();
 }
