@@ -2,6 +2,7 @@ package project.price_it.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,10 +27,10 @@ public class RequestController {
     @PostMapping("/create")
     @Operation(summary = "의뢰 생성")
     public ResponseEntity<RequestDto> createRequest(
-            @RequestHeader("Authorization") String authHeader,
+            HttpServletRequest request,
             @RequestBody RequestDto requestDto) {
 
-        String token = authHeader.replace("Bearer ", "");
+        String token = jwtTokenProvider.resolveToken(request);
         Long userId = jwtTokenProvider.getUserIdFromAccessToken(token);
 
         RequestEntity requestEntity = RequestEntity.builder()
