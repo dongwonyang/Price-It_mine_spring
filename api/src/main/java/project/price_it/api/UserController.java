@@ -37,9 +37,9 @@ public class UserController {
 
     @PostMapping("/login")
     @Operation(summary = "로그인 및 Access Token 발급")
-    public ResponseEntity<JwtTokenDto> login(@RequestBody LoginRequestDto request) {
+    public ResponseEntity<JwtTokenDto> login(@RequestBody LoginRequestDto loginRequestDto) {
         // 1️⃣ 사용자 인증
-        UserDto user = UserDto.fromEntity(userService.authenticate(request.getEmail(), request.getPassword()));
+        UserDto user = UserDto.fromEntity(userService.authenticate(loginRequestDto.getEmail(), loginRequestDto.getPassword()));
 
         // 2️⃣ Token 생성
         String accessToken = jwtTokenProvider.createAccessToken(user.getId().toString());
@@ -54,8 +54,8 @@ public class UserController {
             summary = "access token 재발급",
             description = "accessToken null 가능"
     )
-    public ResponseEntity<String> refreshAccessToken(@RequestBody JwtTokenDto request) {
-        String refreshToken = request.getRefreshToken();
+    public ResponseEntity<String> refreshAccessToken(@RequestBody JwtTokenDto jwtTokenDto) {
+        String refreshToken = jwtTokenDto.getRefreshToken();
 
         String newAccessToken = jwtTokenProvider.refreshAccessToken(refreshToken);
         return ResponseEntity.ok(newAccessToken);
