@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.price_it.dto.city.CityRequestDto;
 import project.price_it.dto.city.CityResponseDto;
+import project.price_it.dto.district.DistrictRequestDto;
 import project.price_it.dto.district.DistrictResponseDto;
+import project.price_it.dto.mart.MartResponseDto;
 import project.price_it.service.CityService;
 import project.price_it.service.DistrictService;
 import project.price_it.service.MartService;
@@ -39,5 +41,14 @@ public class SearchController {
         return ResponseEntity.ok(districtService.getDistrictByCity(cityRequestDto.getCityName()).stream()
                 .map(d -> new DistrictResponseDto(d.getName()))
                 .collect(Collectors.toList()));
+    }
+
+    @PostMapping("/marts")
+    @Operation(summary = "district 입력 시 mart 반환")
+    public ResponseEntity<List<MartResponseDto>> getMart(@RequestBody DistrictRequestDto districtRequestDto){
+        return ResponseEntity.ok(
+                martService.getMartByDistrict(districtRequestDto.getDistrictName()).stream()
+                        .map(d-> new MartResponseDto(d.getName()))
+                        .collect(Collectors.toList()));
     }
 }
