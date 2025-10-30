@@ -24,6 +24,7 @@ public class DistrictEntity {
     private CityEntity city;
 
     @OneToMany(mappedBy = "district", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<MartEntity> marts = new ArrayList<>();
 
 }
