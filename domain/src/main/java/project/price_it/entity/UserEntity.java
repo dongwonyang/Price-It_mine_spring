@@ -3,6 +3,7 @@ package project.price_it.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import project.price_it.entity.point.PointEntity;
+import project.price_it.entity.point.PointType;
 
 import java.util.ArrayList;
 import java.util.List;

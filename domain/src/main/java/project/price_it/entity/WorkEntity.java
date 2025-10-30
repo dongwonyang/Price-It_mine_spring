@@ -19,6 +19,10 @@ public class WorkEntity {
     @JoinColumn(name = "request_id", nullable = true) // 의로 없어도 가격 제출 가능하도록
     private RequestEntity request;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "worker_id", nullable = false)
+    private UserEntity worker;
+
     @Column
     private int price;
 

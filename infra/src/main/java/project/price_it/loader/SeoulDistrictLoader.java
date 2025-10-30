@@ -16,7 +16,6 @@ import project.price_it.repository.CategoryRepository;
 import project.price_it.repository.CityRepository;
 import project.price_it.repository.DistrictRepository;
 import project.price_it.repository.MartRepository;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.FileNotFoundException;
@@ -24,7 +23,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
