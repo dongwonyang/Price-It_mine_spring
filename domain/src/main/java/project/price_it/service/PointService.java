@@ -21,7 +21,7 @@ public class PointService {
     public void addPoint(Long userId, int amount, PointType type) {
         UserEntity user = userRepository.findById(userId).orElseThrow();
 
-        if(type == PointType.USE && user.getPoint() > amount){
+        if(type == PointType.USE && user.getPoint() < amount){
             throw new IllegalArgumentException(
                     "Lack of points. user: " + user.getPoint() +
                             ", need: " + amount
