@@ -27,6 +27,7 @@ public class WorkDto {
         if (work == null) return null;
 
         return WorkDto.builder()
+                .id(work.getId())
                 .price(work.getPrice())
                 .name(work.getName())
                 .request_id(work.getRequest().getId())

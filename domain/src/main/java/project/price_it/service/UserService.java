@@ -17,6 +17,7 @@ public class UserService {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다: " + entity.getEmail());
         }
 
+        entity.setPoint(1000);
         return userRepository.save(entity);
     }
 

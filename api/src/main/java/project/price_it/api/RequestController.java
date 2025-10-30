@@ -6,8 +6,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import project.price_it.dto.request.RequestDto;
+import project.price_it.dto.request.RequestReqDto;
 import project.price_it.entity.RequestEntity;
 import project.price_it.security.JwtTokenProvider;
 import project.price_it.service.PointService;
@@ -28,19 +31,19 @@ public class RequestController {
     @Operation(summary = "의뢰 생성")
     public ResponseEntity<RequestDto> createRequest(
             HttpServletRequest request,
-            @RequestBody RequestDto requestDto) {
+            @RequestBody RequestReqDto requestReqDto) {
 
         String token = jwtTokenProvider.resolveToken(request);
         Long userId = jwtTokenProvider.getUserIdFromAccessToken(token);
 
         RequestEntity requestEntity = RequestEntity.builder()
-                .name(requestDto.getName())
-                .pointPerPerson(requestDto.getPointPerPerson())
-                .maxParticipants(requestDto.getMaxParticipants())
-                .closingDate(requestDto.getClosingDate())
+                .name(requestReqDto.getName())
+                .pointPerPerson(requestReqDto.getPointPerPerson())
+                .maxParticipants(requestReqDto.getMaxParticipants())
+                .closingDate(requestReqDto.getClosingDate())
                 .build();
 
-        RequestEntity result = requestService.createRequest(requestEntity, userId, requestDto.getMart(), requestDto.getCategory());
+        RequestEntity result = requestService.createRequest(requestEntity, userId, requestReqDto.getMart(), requestReqDto.getCategory());
 
         return ResponseEntity.ok(RequestDto.fromEntity(result));
     }

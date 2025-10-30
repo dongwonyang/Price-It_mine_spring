@@ -7,10 +7,11 @@ import project.price_it.entity.CategoryEntity;
 import project.price_it.entity.MartEntity;
 import project.price_it.entity.RequestEntity;
 import project.price_it.entity.UserEntity;
-import project.price_it.repository.CategoryRepository;
-import project.price_it.repository.MartRepository;
-import project.price_it.repository.RequestRepository;
-import project.price_it.repository.UserRepository;
+import project.price_it.entity.point.PointEntity;
+import project.price_it.entity.point.PointType;
+import project.price_it.repository.*;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -19,9 +20,10 @@ public class RequestService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final MartRepository martRepository;
+    private final PointService pointService;
 
     @Transactional
-    public RequestEntity createRequest(RequestEntity requestEntity, Long requesterId, String martName, String categoryName){
+    public RequestEntity createRequest(RequestEntity requestEntity, Long requesterId, String martName, String categoryName) {
         UserEntity requester = userRepository.findById(requesterId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
@@ -30,6 +32,9 @@ public class RequestService {
 
         MartEntity mart = martRepository.findByName(martName)
                 .orElseThrow(() -> new IllegalArgumentException("Mart not found"));
+
+        int requiredPoints = requestEntity.getPointPerPerson() * requestEntity.getMaxParticipants();
+        pointService.addPoint(requesterId, requiredPoints, PointType.USE);
 
         RequestEntity request = RequestEntity.builder()
                 .requester(requester)
