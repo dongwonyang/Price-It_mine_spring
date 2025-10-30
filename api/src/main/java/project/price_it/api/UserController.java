@@ -3,6 +3,7 @@ package project.price_it.api;
 import io.jsonwebtoken.Jwts;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import project.price_it.dto.user.LoginRequestDto;
 import project.price_it.dto.user.JwtTokenDto;
 import project.price_it.dto.user.UserDto;
+import project.price_it.entity.WorkEntity;
 import project.price_it.security.JwtTokenProvider;
 import project.price_it.service.UserService;
 
@@ -62,4 +64,14 @@ public class UserController {
     }
 
 
+
+    @GetMapping("/status")
+    @Operation(summary = "기본 정보")
+    public ResponseEntity<UserDto> getStatus(HttpServletRequest request){
+        String token = jwtTokenProvider.resolveToken(request);
+        Long userId = jwtTokenProvider.getUserIdFromAccessToken(token);
+
+
+        return ResponseEntity.ok( UserDto.fromEntity(userService.get(userId)));
+    }
 }
