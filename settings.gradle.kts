@@ -1,4 +1,4 @@
-rootProject.name = "crowdSourcing_api"
+rootProject.name = "Price-it"
 
 // 하위 모듈들 등록
 include("api", "domain", "common")
