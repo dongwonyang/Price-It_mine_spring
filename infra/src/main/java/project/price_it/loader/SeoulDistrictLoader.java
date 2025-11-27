@@ -3,6 +3,8 @@ package project.price_it.loader;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import org.antlr.v4.runtime.misc.Pair;
+import org.locationtech.proj4j.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
@@ -16,6 +18,7 @@ import project.price_it.repository.CategoryRepository;
 import project.price_it.repository.CityRepository;
 import project.price_it.repository.DistrictRepository;
 import project.price_it.repository.MartRepository;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.FileNotFoundException;
@@ -36,12 +39,22 @@ public class SeoulDistrictLoader implements CommandLineRunner {
     private final MartRepository martRepository;
     private final CategoryRepository categoryRepository;
 
+    private final CoordinateTransform transform;
+
 
     public SeoulDistrictLoader(CityRepository cityRepository, DistrictRepository districtRepository, MartRepository martRepository, CategoryRepository categoryRepository) {
         this.cityRepository = cityRepository;
         this.districtRepository = districtRepository;
         this.martRepository = martRepository;
         this.categoryRepository = categoryRepository;
+
+        CRSFactory crsFactory = new CRSFactory();
+        // EPSG:5179 → WGS84
+        CoordinateReferenceSystem srcCrs = crsFactory.createFromName("EPSG:5179");
+        CoordinateReferenceSystem dstCrs = crsFactory.createFromName("EPSG:4326");
+
+        CoordinateTransformFactory ctFactory = new CoordinateTransformFactory();
+        transform = ctFactory.createTransform(srcCrs, dstCrs);
     }
 
     @Override
@@ -84,7 +97,7 @@ public class SeoulDistrictLoader implements CommandLineRunner {
 
     private void initMartWithAPI() {
         try {
-            String apiKey = "49714d4552646964313039556e4a4f6b";
+            String apiKey = "";
             String urlStr = "http://openapi.seoul.go.kr:8088/" + apiKey + "/xml/LOCALDATA_082501/1/5/";
             URL url = new URL(urlStr);
 
@@ -160,6 +173,9 @@ public class SeoulDistrictLoader implements CommandLineRunner {
                 String address = node.path("sitewhladdr").asText(null);
                 double x = node.path("x").asDouble();
                 double y = node.path("y").asDouble();
+                Pair<Double, Double> latLng = getLatLng(x, y);
+                double lat = latLng.a;
+                double lng = latLng.b;
 
                 if (address == null || name == null) continue;
 
@@ -183,8 +199,8 @@ public class SeoulDistrictLoader implements CommandLineRunner {
 
                     MartEntity mart = MartEntity.builder()
                             .name(name)
-                            .lat(y) // Y → lat
-                            .lng(x) // X → lng
+                            .lat(lat)
+                            .lng(lng)
                             .district(district)
                             .build();
 
@@ -198,6 +214,16 @@ public class SeoulDistrictLoader implements CommandLineRunner {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private Pair<Double, Double> getLatLng(double x, double y){
+        ProjCoordinate src = new ProjCoordinate(x, y);
+        ProjCoordinate dst = new ProjCoordinate();
+
+        transform.transform(src, dst);
+
+        // dst.y → lat, dst.x → lng
+        return new Pair<Double, Double>(dst.y, dst.x);
     }
 
 

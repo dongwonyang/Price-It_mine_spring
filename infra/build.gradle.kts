@@ -13,4 +13,6 @@ dependencies {
     implementation("org.jetbrains:annotations:24.0.0")
 
     implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
+
+    implementation("org.locationtech.proj4j:proj4j:1.1.0")
 }
